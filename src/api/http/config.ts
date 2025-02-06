@@ -31,3 +31,5 @@ export const CURRENT_CONFIG = {
 } as const
 
 export type Config = typeof CURRENT_CONFIG;
+
+// console.log({ config: CURRENT_CONFIG })

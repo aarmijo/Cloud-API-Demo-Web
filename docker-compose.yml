@@ -79,21 +79,31 @@ services:
       - MQTT_DRC_HOST=emqx
       - MQTT_DRC_PORT=8083
 
-  web:
+  frontend:
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - "8080:80"
-    env_file:
-      - .env.secret
-    environment:
-      - VITE_BASE_URL=http://localhost:6789/
-      - VITE_WEBSOCKET_URL=ws://localhost:6789/api/v1/ws
     networks:
       - dji_cloud_web_network
-    depends_on:
-      - cloud_api
+    volumes:
+      - ./env:/app/env
+      - ./.env.secret:/app/.env.secret
+      - ./src:/app/src
+      - ./public:/app/public
+
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env.secret
+
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./containers/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "8081:80"
+    networks:
+      - dji_cloud_web_network
 
 networks:
   dji_cloud_web_network:
