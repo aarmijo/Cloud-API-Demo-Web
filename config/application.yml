@@ -85,8 +85,8 @@ url:
     prefix: control
     version: /api/v1
 
-oss:
-  enable: false
+# oss:
+#   enable: false
 
 # Tutorial: https://www.alibabacloud.com/help/en/object-storage-service/latest/use-a-temporary-credential-provided-by-sts-to-access-oss
 # oss:
@@ -102,18 +102,18 @@ oss:
 #   bucket: Please enter your bucket name.
 #   object-dir-prefix: Please enter a folder name.
 
-#oss:
-#  enable: true
-#  provider: aws
-#  endpoint: https://s3.us-east-1.amazonaws.com
-#  access-key:
-#  secret-key:
-#  expire: 3600
-#  region: us-east-1
-#  role-session-name: cloudApi
-#  role-arn:
-#  bucket: cloudapi-bucket
-#  object-dir-prefix: wayline
+oss:
+  enable: ${CLOUD_OSS_ENABLE:false}
+  provider: ${CLOUD_OSS_PROVIDER:}
+  endpoint: ${CLOUD_OSS_ENDPOINT:}
+  access-key: ${CLOUD_OSS_ACCESS_KEY:}
+  secret-key: ${CLOUD_OSS_SECRET_KEY:}
+  expire: ${CLOUD_OSS_EXPIRE:3600}
+  region: ${CLOUD_OSS_REGION:}
+  role-session-name: ${CLOUD_OSS_ROLE_SESSION_NAME:}
+  role-arn: ${CLOUD_OSS_ROLE_ARN:}
+  bucket: ${CLOUD_OSS_BUCKET:}
+  object-dir-prefix: ${CLOUD_OSS_OBJECT_DIR_PREFIX:}
 
 #oss:
 #  enable: true

@@ -78,6 +78,22 @@ services:
       - MQTT_BASIC_PASSWORD=123456
       - MQTT_DRC_HOST=emqx
       - MQTT_DRC_PORT=8083
+      - CLOUD_OSS_ENABLE=${CLOUD_OSS_ENABLE}
+      - CLOUD_OSS_PROVIDER=${CLOUD_OSS_PROVIDER}
+      - CLOUD_OSS_ENDPOINT=${CLOUD_OSS_ENDPOINT}
+      - CLOUD_OSS_ACCESS_KEY=${CLOUD_OSS_ACCESS_KEY}
+      - CLOUD_OSS_SECRET_KEY=${CLOUD_OSS_SECRET_KEY}
+      - CLOUD_OSS_REGION=${CLOUD_OSS_REGION}
+      - CLOUD_OSS_BUCKET=${CLOUD_OSS_BUCKET}
+      - CLOUD_OSS_OBJECT_DIR_PREFIX=${CLOUD_OSS_OBJECT_DIR_PREFIX}
+      - CLOUD_OSS_ROLE_SESSION_NAME=${CLOUD_OSS_ROLE_SESSION_NAME}
+      - CLOUD_OSS_ROLE_ARN=${CLOUD_OSS_ROLE_ARN}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6789/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   frontend:
     build:
@@ -90,18 +106,29 @@ services:
       - ./.env.secret:/app/.env.secret
       - ./src:/app/src
       - ./public:/app/public
-
     ports:
-      - "8080:8080"
+      - "3000:3000"
     env_file:
       - .env.secret
+    environment:
+      - VITE_BASE_URL=${VITE_BASE_URL:-/api/}
+      - VITE_WEBSOCKET_URL=${VITE_WEBSOCKET_URL:-/api/v1/ws}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   nginx:
     image: nginx:alpine
     volumes:
       - ./containers/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
     ports:
-      - "8081:80"
+      - "8080:80"
+    depends_on:
+      - cloud_api
+      - frontend
     networks:
       - dji_cloud_web_network
 
