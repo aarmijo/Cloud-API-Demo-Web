@@ -1,7 +1,7 @@
 # DJI Cloud API Demo Web
 
 The web interface will be available at [http://localhost:8080/project](http://localhost:8080/project)  
-Login Credentials:  
+Login Credentials: 
 
 &nbsp;&nbsp;&nbsp;&nbsp;Username: **adminPC**  
 &nbsp;&nbsp;&nbsp;&nbsp;Password: **adminPC**
